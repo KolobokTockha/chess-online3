@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шахматный клуб "Рыцарь"</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            background-attachment: fixed;
+            background-image: 
+                repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0px, rgba(255, 255, 255, 0.03) 20px, rgba(0, 0, 0, 0.02) 20px, rgba(0, 0, 0, 0.02) 40px),
+                radial-gradient(circle at 30% 40%, rgba(210, 180, 140, 0.15) 0%, transparent 30%);
+            color: #f0e9de;
+        }
+
+        .menu {
+            background: rgba(20, 20, 20, 0.95);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 48px;
+            padding: 2rem 4rem;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.9);
+            border: 1px solid #444;
+            text-align: center;
+            max-width: 700px;
+            width: 90%;
+        }
+
+        /* Стиль для информации о программисте */
+        .programmer-info {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0.05) 100%);
+            border: 1px solid #ffd700;
+            border-radius: 60px;
+            padding: 0.8rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .programmer-info::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            20%, 100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .programmer-icon {
+            font-size: 2rem;
+            color: #ffd700;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5)); }
+            50% { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)); }
+        }
+
+        .programmer-text {
+            font-size: 1.2rem;
+            color: #ffd700;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .programmer-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            background: linear-gradient(45deg, #ffd700, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .programmer-role {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-top: 2px;
+        }
+
+        .club-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #ffd700;
+        }
+
+        .club-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            font-family: 'Times New Roman', serif;
+            letter-spacing: 2px;
+        }
+
+        .club-name::before {
+            content: "♞ ";
+            font-size: 2.8rem;
+            color: #ffd700;
+        }
+
+        .club-name::after {
+            content: " ♞";
+            font-size: 2.8rem;
+            color: #ffd700;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5), 0 0 20px rgba(255, 215, 0, 0.3);
+            color: #fff;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: #aaa;
+            border-bottom: 1px dashed #444;
+            padding-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.8rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .mode-btn {
+            border: none;
+            background: #333;
+            padding: 1.5rem 2.8rem;
+            border-radius: 60px;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 15px 20px -8px rgba(0,0,0,0.8);
+            transition: 0.2s ease-in-out;
+            border: 1px solid #444;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            min-width: 260px;
+            letter-spacing: 1px;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .mode-btn.computer {
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+        }
+
+        .mode-btn.friend {
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+        }
+
+        .mode-btn.computer::before {
+            content: "🤖";
+            font-size: 2rem;
+        }
+
+        .mode-btn.friend::before {
+            content: "👥";
+            font-size: 2rem;
+        }
+
+        .mode-btn:hover {
+            background: #444;
+            transform: translateY(-5px);
+            box-shadow: 0 22px 25px -8px black;
+            border-color: #ffd700;
+            color: #ffd700;
+        }
+
+        .mode-btn:active {
+            transform: translateY(2px);
+        }
+
+        .footer-chess {
+            margin: 2rem 0 1.5rem 0;
+            font-size: 2rem;
+            opacity: 0.5;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            color: #ffd700;
+        }
+
+        .teacher-info {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #ffd700;
+            font-size: 1.2rem;
+            color: #ffd700;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .teacher-name {
+            font-weight: bold;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .teacher-name i {
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .teacher-phone {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 8px 20px;
+            border-radius: 40px;
+            border: 1px solid #ffd700;
+            transition: 0.2s;
+        }
+
+        .teacher-phone:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: scale(1.05);
+        }
+
+        .teacher-phone a {
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+        }
+
+        .teacher-phone i {
+            color: #fff;
+        }
+
+        @media (max-width: 500px) {
+            .menu {
+                padding: 1.5rem;
+            }
+            .programmer-info {
+                flex-direction: column;
+                text-align: center;
+                padding: 1rem;
+            }
+            .programmer-name {
+                font-size: 1.1rem;
+            }
+            .club-name {
+                font-size: 1.8rem;
+            }
+            .club-name::before, .club-name::after {
+                font-size: 2rem;
+            }
+            h1 {
+                font-size: 2.5rem;
+            }
+            .mode-btn {
+                font-size: 1.6rem;
+                padding: 1.2rem 1.8rem;
+                min-width: 220px;
+            }
+            .teacher-phone a {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+    <!-- Подключаем Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="menu">
+        <!-- Информация о программисте (сверху) -->
+        <div class="programmer-info">
+            <div class="programmer-icon">
+                <i class="fas fa-code"></i>
+            </div>
+            <div class="programmer-text">
+                <div class="programmer-name">Беляев Владислав Николаевич</div>
+                <div class="programmer-role">Ведущий разработчик</div>
+            </div>
+            <div class="programmer-icon">
+                <i class="fas fa-laptop-code"></i>
+            </div>
+        </div>
+
+        <div class="club-header">
+            <div class="club-name">Шахматный клуб "Рыцарь"</div>
+        </div>
+
+        <h1>Chess</h1>
+        <div class="subtitle">выберите режим игры</div>
+
+        <div class="buttons">
+            <a href="gameBot.html" class="mode-btn computer">
+                С компьютером
+            </a>
+            <a href="gamePlayer.html" class="mode-btn friend">
+                С другом
+            </a>
+        </div>
+
+        <div class="footer-chess">
+            <span>♔</span> <span>♕</span> <span>♗</span> <span>♘</span> <span>♖</span>
+        </div>
+
+        <div class="teacher-info">
+            <div class="teacher-name">
+                <i class="fas fa-chalkboard-teacher"></i>
+                Преподаватель: Игорь Александрович
+            </div>
+            <div class="teacher-phone">
+                <i class="fas fa-phone-alt"></i>
+                <a href="tel:+79381443852">+7 938 144 38 52</a>
+            </div>
+            <div style="font-size: 0.9rem; color: #888; margin-top: 0.5rem;">
+                <i class="far fa-clock"></i> Ежедневно с 10:00 до 20:00
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Анимация фигур
+        const figures = document.querySelectorAll('.footer-chess span');
+        figures.forEach((fig) => {
+            fig.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+            fig.addEventListener('mouseenter', () => {
+                fig.style.transform = 'translateY(-6px) scale(1.2)';
+                fig.style.opacity = '1';
+            });
+            fig.addEventListener('mouseleave', () => {
+                fig.style.transform = 'none';
+                fig.style.opacity = '0.5';
+            });
+        });
+
+        // Анимация телефона
+        const phone = document.querySelector('.teacher-phone');
+        phone.addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+        });
+
+        // Анимация программиста
+        const programmerInfo = document.querySelector('.programmer-info');
+        programmerInfo.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.02)';
+            this.style.transition = 'transform 0.3s ease';
+        });
+        programmerInfo.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>
